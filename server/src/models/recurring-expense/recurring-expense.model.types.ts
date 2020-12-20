@@ -4,7 +4,7 @@ import { ICategoryDocument } from "../category/category.model.types";
 export interface IRecurringExpenseDocument extends Document {
 	price: number;
 	name: string;
-	creationDate: string;
+	creationDate: Date;
 	category: ICategoryDocument;
 }
 
