@@ -31,3 +31,18 @@ export const MOCKED_RECURRING_EXPENSE_WITH_ID_STRINGFIED = {
 	creationDate: faker.date.recent(),
 	category: MOCKED_CATEGORY_ID_STRINGFIED,
 };
+
+export const MOCKED_NON_RECURRING_EXPENSE_ID = new Types.ObjectId();
+export const MOCKED_NON_RECURRING_EXPENSE = {
+	_id: MOCKED_NON_RECURRING_EXPENSE_ID,
+	price: faker.random.number(),
+	name: faker.name.title(),
+};
+
+export const MOCKED_NON_RECURRING_EXPENSE_ID_STRINGFIED = MOCKED_NON_RECURRING_EXPENSE_ID.toString();
+export const MOCKED_NON_RECURRING_EXPENSE_WITH_ID_STRINGFIED = {
+	...MOCKED_NON_RECURRING_EXPENSE,
+	_id: MOCKED_NON_RECURRING_EXPENSE_ID_STRINGFIED,
+	price: faker.random.number(),
+	name: faker.name.title(),
+};
