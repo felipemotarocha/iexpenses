@@ -1,4 +1,7 @@
 import { Router, Request, Response } from "express";
+import { Types } from "mongoose";
+import Category from "../../models/category/category.model";
+
 import RecurringExpense from "../../models/recurring-expense/recurring-expense.model";
 
 const router = Router();
@@ -14,8 +17,15 @@ router.get("/", async (_req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
 	try {
-		const createdRecurringExpense = new RecurringExpense(req.body);
+		const {
+			body: { category },
+		} = req;
 
+		const categoryIsNotValid =
+			!Types.ObjectId.isValid(category) || !(await Category.findById(category));
+		if (categoryIsNotValid) throw new Error("Please provide a valid category.");
+
+		const createdRecurringExpense = new RecurringExpense(req.body);
 		await createdRecurringExpense.save();
 
 		res.status(201).send(createdRecurringExpense);

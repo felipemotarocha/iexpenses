@@ -21,6 +21,7 @@ const recurringExpenseSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Category",
 		autopopulate: true,
+		required: true,
 	},
 });
 

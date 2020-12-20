@@ -1,10 +1,11 @@
 import { Model, Document } from "mongoose";
+import { ICategoryDocument } from "../category/category.model.types";
 
 export interface IRecurringExpenseDocument extends Document {
 	price: number;
 	name: string;
 	creationDate: string;
-	type: "recurring";
+	category: ICategoryDocument;
 }
 
 export interface IRecurringExpenseModel
