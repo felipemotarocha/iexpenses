@@ -16,4 +16,5 @@ export interface IUserDocument extends Document {
 export interface IUserModel extends Model<IUserDocument> {
 	findByIdAndPopulateExpensesAndIncomes: (id: string) => Promise<any>;
 	findAllAndPopulateExpensesAndIncomes: () => Promise<any>;
+	loginWithEmailAndPassword: (email: string, password: string) => Promise<any>;
 }

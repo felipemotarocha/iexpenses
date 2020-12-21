@@ -1,4 +1,5 @@
 import { Schema, model, Model } from "mongoose";
+import { hash, compare } from "bcryptjs";
 
 import { IUserDocument, IUserModel } from "./user.model.types";
 
@@ -43,6 +44,19 @@ userSchema.virtual("incomes", {
 });
 
 userSchema.static(
+	"loginWithEmailAndPassword",
+	async function (this: Model<IUserDocument>, email: string, password: string) {
+		const user = await User.findOne({ email });
+		if (!user) throw new Error("Invalid credentials.");
+
+		const passwordIsInvalid = !(await compare(password, user.password));
+		if (passwordIsInvalid) throw new Error("Invalid credentials.");
+
+		return user;
+	}
+);
+
+userSchema.static(
 	"findAllAndPopulateExpensesAndIncomes",
 	function (this: Model<IUserDocument>) {
 		return this.find({})
@@ -63,6 +77,14 @@ userSchema.static(
 			.exec();
 	}
 );
+
+userSchema.pre("save", async function (this: IUserDocument, next) {
+	if (this.isModified("password")) {
+		this.password = await hash(this.password, 8);
+	}
+
+	next();
+});
 
 const User = model<IUserDocument, IUserModel>("User", userSchema);
 

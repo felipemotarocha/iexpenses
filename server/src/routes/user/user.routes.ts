@@ -55,6 +55,20 @@ router.post("/", async (req: Request, res: Response) => {
 	}
 });
 
+router.post("/login", async (req: Request, res: Response) => {
+	try {
+		const {
+			body: { email, password },
+		} = req;
+
+		const user = await User.loginWithEmailAndPassword(email, password);
+
+		res.status(200).send(user);
+	} catch (err) {
+		res.status(500).send(err.message);
+	}
+});
+
 router.patch("/:userId", async (req, res) => {
 	try {
 		const {

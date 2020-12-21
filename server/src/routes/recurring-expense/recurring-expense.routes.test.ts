@@ -4,7 +4,6 @@ import faker from "faker";
 import app from "../../app";
 import RecurringExpense from "../../models/recurring-expense/recurring-expense.model";
 import {
-	MOCKED_CATEGORY,
 	MOCKED_CATEGORY_ID_STRINGFIED,
 	MOCKED_RECURRING_EXPENSE,
 	MOCKED_RECURRING_EXPENSE_ID_STRINGFIED,
