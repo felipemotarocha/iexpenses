@@ -4,8 +4,11 @@ import faker from "faker";
 import app from "../../app";
 import RecurringExpense from "../../models/recurring-expense/recurring-expense.model";
 import {
+	MOCKED_CATEGORY,
+	MOCKED_CATEGORY_ID_STRINGFIED,
 	MOCKED_RECURRING_EXPENSE,
 	MOCKED_RECURRING_EXPENSE_ID_STRINGFIED,
+	MOCKED_USER_ID_STRINGFIED,
 } from "../../utils/test.utils";
 import { RecurringExpense as RecurringExpenseType } from "../../types/recurring-expense.types";
 
@@ -23,6 +26,25 @@ describe("Recurring Expense Related Requests", () => {
 				MOCKED_RECURRING_EXPENSE_ID_STRINGFIED
 			);
 			expect(createdRecurringExpense).toBeDefined();
+		});
+		it("should not create a recurring expense when an invalid category is provided", async () => {
+			await RecurringExpense.deleteMany({});
+
+			await request(app)
+				.post("/api/recurring-expense")
+				.send({
+					...MOCKED_RECURRING_EXPENSE,
+					category: faker.random.uuid(),
+				})
+				.expect(500);
+		});
+		it("should not create a recurring expense when an invalid userId is provided", async () => {
+			await RecurringExpense.deleteMany({});
+
+			await request(app)
+				.post("/api/non-recurring-expense")
+				.send({ ...MOCKED_RECURRING_EXPENSE, userId: faker.random.uuid() })
+				.expect(500);
 		});
 		it("should not create a recurring expense when an invalid field is provided", async () => {
 			await RecurringExpense.deleteMany({});
@@ -67,6 +89,12 @@ describe("Recurring Expense Related Requests", () => {
 				expect(foundRecurringExpense.price).toStrictEqual(
 					MOCKED_RECURRING_EXPENSE.price
 				);
+				expect(foundRecurringExpense.category._id).toStrictEqual(
+					MOCKED_CATEGORY_ID_STRINGFIED
+				);
+				expect(foundRecurringExpense.userId).toStrictEqual(
+					MOCKED_USER_ID_STRINGFIED
+				);
 			});
 		});
 		describe("PATCH Requests", () => {
@@ -89,7 +117,22 @@ describe("Recurring Expense Related Requests", () => {
 				expect(foundUpdatedRecurringExpense!.name).toBe(newName);
 				expect(updatedRecurringExpense.name).toBe(newName);
 			});
-
+			it("should not update a recurring expense when an invalid category is provided", async () => {
+				await request(app)
+					.patch(
+						`/api/recurring-expense/${MOCKED_RECURRING_EXPENSE_ID_STRINGFIED}`
+					)
+					.send({ category: faker.random.uuid() })
+					.expect(500);
+			});
+			it("should not update a recurring expense when an invalid userId is provided", async () => {
+				await request(app)
+					.patch(
+						`/api/recurring-expense/${MOCKED_RECURRING_EXPENSE_ID_STRINGFIED}`
+					)
+					.send({ userId: faker.random.uuid() })
+					.expect(500);
+			});
 			it("should not update a recurring expense when an invalid field is provided", async () => {
 				await request(app)
 					.patch(
@@ -118,7 +161,12 @@ describe("Recurring Expense Related Requests", () => {
 				expect(recurringExpense.price).toStrictEqual(
 					MOCKED_RECURRING_EXPENSE.price
 				);
-
+				expect(recurringExpense.category).toStrictEqual(
+					MOCKED_CATEGORY_ID_STRINGFIED
+				);
+				expect(recurringExpense.userId).toStrictEqual(
+					MOCKED_USER_ID_STRINGFIED
+				);
 				expect(
 					await RecurringExpense.findById(
 						MOCKED_RECURRING_EXPENSE_ID_STRINGFIED

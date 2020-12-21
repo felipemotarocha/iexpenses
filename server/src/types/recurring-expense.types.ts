@@ -5,4 +5,5 @@ export type RecurringExpense = {
 	price: number;
 	name: string;
 	category: Category;
+	userId: string;
 };

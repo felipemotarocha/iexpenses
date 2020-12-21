@@ -6,4 +6,5 @@ export type NonRecurringExpense = {
 	name: string;
 	creationDate: Date;
 	category: Category;
+	userId: string;
 };
