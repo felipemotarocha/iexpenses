@@ -4,8 +4,6 @@ import faker from "faker";
 import app from "../../app";
 import RecurringExpense from "../../models/recurring-expense/recurring-expense.model";
 import {
-	MOCKED_CATEGORY,
-	MOCKED_CATEGORY_ID_STRINGFIED,
 	MOCKED_RECURRING_EXPENSE,
 	MOCKED_RECURRING_EXPENSE_ID_STRINGFIED,
 } from "../../utils/test.utils";
@@ -69,12 +67,6 @@ describe("Recurring Expense Related Requests", () => {
 				expect(foundRecurringExpense.price).toStrictEqual(
 					MOCKED_RECURRING_EXPENSE.price
 				);
-				expect(foundRecurringExpense.category._id).toStrictEqual(
-					MOCKED_CATEGORY_ID_STRINGFIED
-				);
-				expect(foundRecurringExpense.category.name).toStrictEqual(
-					MOCKED_CATEGORY.name
-				);
 			});
 		});
 		describe("PATCH Requests", () => {
@@ -87,7 +79,7 @@ describe("Recurring Expense Related Requests", () => {
 					.patch(
 						`/api/recurring-expense/${MOCKED_RECURRING_EXPENSE_ID_STRINGFIED}`
 					)
-					.send({ name: newName, category: MOCKED_CATEGORY_ID_STRINGFIED })
+					.send({ name: newName })
 					.expect(200);
 
 				const foundUpdatedRecurringExpense = await RecurringExpense.findById(
@@ -97,14 +89,7 @@ describe("Recurring Expense Related Requests", () => {
 				expect(foundUpdatedRecurringExpense!.name).toBe(newName);
 				expect(updatedRecurringExpense.name).toBe(newName);
 			});
-			it("should not update a recurring expense when an invalid category is provided", async () => {
-				await request(app)
-					.patch(
-						`/api/recurring-expense/${MOCKED_RECURRING_EXPENSE_ID_STRINGFIED}`
-					)
-					.send({ category: faker.random.uuid() })
-					.expect(500);
-			});
+
 			it("should not update a recurring expense when an invalid field is provided", async () => {
 				await request(app)
 					.patch(
@@ -133,9 +118,7 @@ describe("Recurring Expense Related Requests", () => {
 				expect(recurringExpense.price).toStrictEqual(
 					MOCKED_RECURRING_EXPENSE.price
 				);
-				expect(recurringExpense.category).toStrictEqual(
-					MOCKED_CATEGORY_ID_STRINGFIED
-				);
+
 				expect(
 					await RecurringExpense.findById(
 						MOCKED_RECURRING_EXPENSE_ID_STRINGFIED

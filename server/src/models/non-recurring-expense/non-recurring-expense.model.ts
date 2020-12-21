@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import {
 	INonRecurringExpenseDocument,
 	INonRecurringExpenseModel,
@@ -12,6 +12,19 @@ const nonRecurringExpenseSchema = new Schema(
 		},
 		name: {
 			type: String,
+			required: true,
+		},
+		creationDate: {
+			type: Date,
+		},
+		category: {
+			type: Schema.Types.ObjectId,
+			ref: "Category",
+			autopopulate: true,
+			required: true,
+		},
+		userId: {
+			type: Types.ObjectId,
 			required: true,
 		},
 	},

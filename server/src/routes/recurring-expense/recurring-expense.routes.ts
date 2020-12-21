@@ -1,8 +1,10 @@
 import { Router, Request, Response } from "express";
-import { Types } from "mongoose";
 
-import Category from "../../models/category/category.model";
 import RecurringExpense from "../../models/recurring-expense/recurring-expense.model";
+import {
+	checkIfCategoryIsValid,
+	checkIfUserIsValid,
+} from "../../utils/routes.utils";
 
 const router = Router();
 
@@ -34,19 +36,21 @@ router.get("/:recurringExpenseId", async (req, res) => {
 router.post("/", async (req: Request, res: Response) => {
 	try {
 		const {
-			body: { category },
+			body: { category, userId },
 		} = req;
 
-		const categoryIsNotValid =
-			!Types.ObjectId.isValid(category) || !(await Category.findById(category));
-		if (categoryIsNotValid) throw new Error("Please provide a valid category.");
+		const { error: categoryError } = await checkIfCategoryIsValid(category);
+		if (categoryError) throw new Error(categoryError);
+
+		const { error: userError } = await checkIfUserIsValid(userId);
+		if (userError) throw new Error(userError);
 
 		const createdRecurringExpense = new RecurringExpense(req.body);
 		await createdRecurringExpense.save();
 
-		res.status(201).send(createdRecurringExpense);
+		return res.status(201).send(createdRecurringExpense);
 	} catch (err) {
-		res.status(500).send(err.message);
+		return res.status(500).send(err.message);
 	}
 });
 
@@ -57,7 +61,7 @@ router.patch("/:recurringExpenseId", async (req, res) => {
 			params: { recurringExpenseId },
 		} = req;
 
-		const validFieldsToUpdate = ["price", "name", "creationDate", "category"];
+		const validFieldsToUpdate = ["price", "name", "category"];
 		const receivedFieldsToUpdate = Object.keys(body);
 
 		const receivedFieldsToUpdateAreInvalid = !receivedFieldsToUpdate.every(
@@ -70,16 +74,8 @@ router.patch("/:recurringExpenseId", async (req, res) => {
 		const categoryIsBeingUpdated = receivedFieldsToUpdate.includes("category");
 		if (categoryIsBeingUpdated) {
 			const categoryId = body["category"];
-
-			const categoryIdIsNotValid = !Types.ObjectId.isValid(categoryId);
-			if (categoryIdIsNotValid) {
-				throw new Error("Please provide a valid category.");
-			}
-
-			const categoryDoesNotExist = !(await Category.findById(categoryId));
-			if (categoryDoesNotExist) {
-				throw new Error("Please provide a valid category.");
-			}
+			const { error: categoryError } = await checkIfCategoryIsValid(categoryId);
+			if (categoryError) throw new Error(categoryError);
 		}
 
 		const recurringExpenseToUpdate = await RecurringExpense.findById(

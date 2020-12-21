@@ -3,6 +3,8 @@ import faker from "faker";
 
 import app from "../../app";
 import {
+	MOCKED_CATEGORY,
+	MOCKED_CATEGORY_ID_STRINGFIED,
 	MOCKED_NON_RECURRING_EXPENSE,
 	MOCKED_NON_RECURRING_EXPENSE_ID_STRINGFIED,
 } from "../../utils/test.utils";
@@ -70,6 +72,12 @@ describe("Non-Recurring Expense Related Requests", () => {
 				expect(foundRecurringExpense.price).toStrictEqual(
 					MOCKED_NON_RECURRING_EXPENSE.price
 				);
+				expect(foundRecurringExpense.category._id).toStrictEqual(
+					MOCKED_CATEGORY_ID_STRINGFIED
+				);
+				expect(foundRecurringExpense.category.name).toStrictEqual(
+					MOCKED_CATEGORY.name
+				);
 			});
 		});
 		describe("PATCH Requests", () => {
@@ -82,7 +90,7 @@ describe("Non-Recurring Expense Related Requests", () => {
 					.patch(
 						`/api/non-recurring-expense/${MOCKED_NON_RECURRING_EXPENSE_ID_STRINGFIED}`
 					)
-					.send({ name: newName })
+					.send({ name: newName, category: MOCKED_CATEGORY_ID_STRINGFIED })
 					.expect(200);
 
 				const foundUpdatedNonRecurringExpense = await NonRecurringExpense.findById(
@@ -91,6 +99,14 @@ describe("Non-Recurring Expense Related Requests", () => {
 
 				expect(foundUpdatedNonRecurringExpense!.name).toBe(newName);
 				expect(updatedNonRecurringExpense.name).toBe(newName);
+			});
+			it("should not update a non recurring expense when an invalid category is provided", async () => {
+				await request(app)
+					.patch(
+						`/api/recurring-expense/${MOCKED_NON_RECURRING_EXPENSE_ID_STRINGFIED}`
+					)
+					.send({ category: faker.random.uuid() })
+					.expect(500);
 			});
 
 			it("should not update a non recurring expense when an invalid field is provided", async () => {
@@ -120,6 +136,9 @@ describe("Non-Recurring Expense Related Requests", () => {
 				);
 				expect(nonRecurringExpense.price).toStrictEqual(
 					MOCKED_NON_RECURRING_EXPENSE.price
+				);
+				expect(nonRecurringExpense.category).toStrictEqual(
+					MOCKED_CATEGORY_ID_STRINGFIED
 				);
 				expect(
 					await NonRecurringExpense.findById(

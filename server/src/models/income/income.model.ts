@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 import { IIncomeDocument, IIncomeModel } from "./income.model.types";
 
@@ -9,6 +9,10 @@ const incomeSchema = new Schema({
 	},
 	amount: {
 		type: Number,
+		required: true,
+	},
+	userId: {
+		type: Types.ObjectId,
 		required: true,
 	},
 });

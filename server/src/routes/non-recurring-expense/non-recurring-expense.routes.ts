@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 
 import NonRecurringExpense from "../../models/non-recurring-expense/non-recurring-expense.model";
+import {
+	checkIfCategoryIsValid,
+	checkIfUserIsValid,
+} from "../../utils/routes.utils";
 
 const router = Router();
 
@@ -31,9 +35,17 @@ router.get("/:nonRecurringExpenseId", async (req, res) => {
 
 router.post("/", async (req: Request, res: Response) => {
 	try {
-		const { body } = req;
+		const {
+			body: { category, userId },
+		} = req;
 
-		const createdNonRecurringExpense = new NonRecurringExpense(body);
+		const { error: categoryError } = await checkIfCategoryIsValid(category);
+		if (categoryError) throw new Error(categoryError);
+
+		const { error: userError } = await checkIfUserIsValid(userId);
+		if (userError) throw new Error(userError);
+
+		const createdNonRecurringExpense = new NonRecurringExpense(req.body);
 		await createdNonRecurringExpense.save();
 
 		res.status(201).send(createdNonRecurringExpense);
@@ -49,7 +61,7 @@ router.patch("/:nonRecurringExpenseId", async (req, res) => {
 			params: { nonRecurringExpenseId },
 		} = req;
 
-		const validFieldsToUpdate = ["name", "price"];
+		const validFieldsToUpdate = ["name", "price", "creationDate", "category"];
 		const receivedFieldsToUpdate = Object.keys(body);
 
 		const receivedFieldsToUpdateAreInvalid = !receivedFieldsToUpdate.every(
@@ -58,6 +70,13 @@ router.patch("/:nonRecurringExpenseId", async (req, res) => {
 
 		if (receivedFieldsToUpdateAreInvalid)
 			throw new Error("The provided fields to update are invalid.");
+
+		const categoryIsBeingUpdated = receivedFieldsToUpdate.includes("category");
+		if (categoryIsBeingUpdated) {
+			const categoryId = body["category"];
+			const { error: categoryError } = await checkIfCategoryIsValid(categoryId);
+			if (categoryError) throw new Error(categoryError);
+		}
 
 		const nonRecurringExpenseToUpdate = await NonRecurringExpense.findById(
 			nonRecurringExpenseId
