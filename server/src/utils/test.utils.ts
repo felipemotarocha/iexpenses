@@ -64,3 +64,18 @@ export const MOCKED_NON_RECURRING_EXPENSE_WITH_ID_STRINGFIED = {
 	category: MOCKED_CATEGORY_ID_STRINGFIED,
 	userId: MOCKED_USER_ID_STRINGFIED,
 };
+
+export const MOCKED_INCOME_ID = new Types.ObjectId();
+export const MOCKED_INCOME = {
+	_id: MOCKED_INCOME_ID,
+	name: faker.name.title(),
+	amount: faker.random.number(),
+	userId: MOCKED_USER_ID,
+};
+
+export const MOCKED_INCOME_ID_STRINGFIED = MOCKED_INCOME_ID.toString();
+export const MOCKED_INCOME_WITH_ID_STRINGFIED = {
+	...MOCKED_INCOME,
+	_id: MOCKED_INCOME_ID_STRINGFIED,
+	userId: MOCKED_USER_ID_STRINGFIED,
+};
