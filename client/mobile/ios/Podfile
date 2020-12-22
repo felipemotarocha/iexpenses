@@ -10,6 +10,8 @@ target 'iExpenses' do
 
   pod 'react-native-config', :path => '../node_modules/react-native-config'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'iExpensesTests' do
     inherit! :complete
     # Pods for testing
