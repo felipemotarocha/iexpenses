@@ -33,9 +33,9 @@ export const getUserSuggestedDailySpend = (user: User) => {
   const totalOfNonRecurringExpenses = getUserTotalNonRecurringExpenses(user);
 
   const todaysDay = new Date();
-  const endDayfTheCurrentMonth = endOfMonth(todaysDay);
+  const endDayOfTheCurrentMonth = endOfMonth(todaysDay);
   const remainingDaysOfTheCurrentMonth = differenceInDays(
-    endDayfTheCurrentMonth,
+    endDayOfTheCurrentMonth,
     todaysDay,
   );
 
