@@ -6,7 +6,7 @@ export const Headline = styled.Text`
 `;
 
 export const Info = styled.Text`
-  font-size: 12px;
+  font-size: 13px;
 `;
 
 export const Spend = styled.Text`
