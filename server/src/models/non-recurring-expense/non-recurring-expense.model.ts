@@ -16,6 +16,7 @@ const nonRecurringExpenseSchema = new Schema(
 		},
 		creationDate: {
 			type: Date,
+			default: new Date(),
 		},
 		category: {
 			type: Schema.Types.ObjectId,
