@@ -1,8 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import {Text} from 'react-native';
-import {IconButton} from 'react-native-paper';
-import {Container} from './header.styles';
+import { Text } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { Container } from './header.styles';
 
 export interface HeaderProps {}
 

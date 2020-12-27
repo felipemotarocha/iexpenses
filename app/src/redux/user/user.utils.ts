@@ -44,3 +44,10 @@ export const getUserSuggestedDailySpend = (user: User) => {
     remainingDaysOfTheCurrentMonth
   );
 };
+
+export const getUserCurrentlyNetBalance = (user: User) => {
+  const userMonthlyNetBalance = getUserMonthlyNetBalance(user);
+  const userTotalNonRecurringExpenses = getUserTotalNonRecurringExpenses(user);
+
+  return userMonthlyNetBalance - userTotalNonRecurringExpenses;
+};

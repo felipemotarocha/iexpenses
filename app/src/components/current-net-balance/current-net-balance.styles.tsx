@@ -5,11 +5,7 @@ export const Headline = styled.Text`
   font-weight: 900;
 `;
 
-export const Info = styled.Text`
-  font-size: 12px;
-`;
-
-export const Spend = styled.Text`
+export const NetBalance = styled.Text`
   color: #5db075;
   font-size: 45px;
 `;
