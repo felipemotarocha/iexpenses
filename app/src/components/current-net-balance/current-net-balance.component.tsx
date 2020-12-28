@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
+
 import { RootState } from '../../redux/root.reducer';
 import { getUserCurrentlyNetBalance } from '../../redux/user/user.utils';
+import { Headline, Info, NetBalance } from './current-net-balance.styles';
+
 import Card from '../card/card.component';
-import { Info } from '../suggested-daily-spend/suggested-daily-spend.styles';
-import { Headline, NetBalance } from './current-net-balance.styles';
 
 export interface CurrentNetBalanceProps {}
 
