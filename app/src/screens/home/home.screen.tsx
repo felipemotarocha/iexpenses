@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 
-import { Container, DateText, Greeting, Headline } from './home.screen.styles';
+import { Container, DateText, Greeting, Headline } from './home.styles';
 import { fetchUserStart } from '../../redux/user/user.actions';
 
 import SuggestedDailySpend from '../../components/suggested-daily-spend/suggested-daily-spend.component';
