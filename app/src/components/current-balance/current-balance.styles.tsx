@@ -9,7 +9,7 @@ export const Info = styled.Text`
   font-size: 13px;
 `;
 
-export const NetBalance = styled.Text`
+export const Balance = styled.Text`
   color: #5db075;
   font-size: 45px;
 `;

@@ -8,7 +8,7 @@ import { fetchUserStart } from '../../redux/user/user.actions';
 
 import SuggestedDailySpend from '../../components/suggested-daily-spend/suggested-daily-spend.component';
 import Header from '../../components/header/header.component';
-import CurrentNetBalance from '../../components/current-net-balance/current-net-balance.component';
+import CurrentBalance from '../../components/current-balance/current-balance.component';
 
 export interface HomeScreenProps {}
 
@@ -28,7 +28,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         <DateText>{today}</DateText>
       </Greeting>
       <SuggestedDailySpend />
-      <CurrentNetBalance />
+      <CurrentBalance />
     </Container>
   );
 };
