@@ -26,7 +26,7 @@ const SuggestedDailySpend: React.FC<SuggestedDailySpendProps> = () => {
         Taking into account your current balance and the days remaining in the
         month.
       </Info>
-      <Spend>R${suggestedDailySpend}</Spend>
+      <Spend>R${suggestedDailySpend?.toFixed(2)}</Spend>
       <Button mode="contained" dark style={{ width: '60%' }}>
         Add Expense
       </Button>
